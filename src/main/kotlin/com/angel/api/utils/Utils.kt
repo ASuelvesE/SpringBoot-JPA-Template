@@ -1,5 +1,6 @@
 package com.angel.api.utils
 
+import com.angel.api.models.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -21,9 +22,12 @@ object Utils {
         return passwordEncoder.matches(rawPassword, encodedPassword)
     }
 
-    fun generateToken(email: String): String {
+    fun generateToken(user: User): String {
         val claims: MutableMap<String, Any> = HashMap()
-        claims["email"] = email
+        claims["email"] = user.email
+        claims["name"] = user.name
+        claims["surnames"] = user.surnames
+        claims["role"] = user.role
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(Date(System.currentTimeMillis()))

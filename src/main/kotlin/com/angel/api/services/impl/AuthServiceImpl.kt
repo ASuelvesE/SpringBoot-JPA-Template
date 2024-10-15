@@ -46,7 +46,7 @@ class AuthServiceImpl : AuthService {
                 ?: throw ApiException(HttpStatus.FOUND,"80/404",loginRequest.email)
 
             if (Utils.matches(loginRequest.password, user.password))
-                return LoginResponse(loginRequest.email,loginRequest.password,Utils.generateToken(user.email))
+                return LoginResponse(loginRequest.email,loginRequest.password,Utils.generateToken(user))
             throw ApiException(HttpStatus.UNAUTHORIZED,"80/401","Incorrect password")
         }catch (e: Exception){
             throw e
