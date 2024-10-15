@@ -33,7 +33,7 @@ class AuthServiceImpl : AuthService {
         try {
             return userRepository.findByEmail(email)
                 ?: throw ApiException(HttpStatus.FOUND,"80/404",email)
-        }catch (e: ApiException){
+        }catch (e: Exception){
             throw e
         }
     }
