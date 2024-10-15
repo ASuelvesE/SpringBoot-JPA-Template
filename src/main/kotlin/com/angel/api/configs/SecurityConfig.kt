@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
@@ -23,10 +24,9 @@ class SecurityConfig {
                         "/swagger-ui.html",
                         "/apiv1/auth/**"
                     ).permitAll()
-                    // Permitir acceso a todas las demás solicitudes
-                    .anyRequest().permitAll()
+                    // El resto con autentificación
+                    .anyRequest().authenticated()
             }
-
         return http.build()
     }
 }
