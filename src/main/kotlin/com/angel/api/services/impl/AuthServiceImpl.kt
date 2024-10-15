@@ -2,7 +2,7 @@ package com.angel.api.impl.services
 
 import com.angel.api.models.enums.Role
 import com.angel.api.models.User
-import com.angel.api.models.exceptions.ApiException
+import com.angel.api.exceptions.ApiException
 import com.angel.api.repositories.UserRepository
 import com.angel.api.services.AuthService
 import com.angel.api.utils.Utils
@@ -31,11 +31,10 @@ class AuthServiceImpl : AuthService {
 
     override fun findByEmail(email: String): User {
         try {
-            return userRepository.findByEmail(email) ?: throw ApiException(HttpStatus.FOUND,"80/404",email)
-        }catch (e: Exception){
-            println(e.message)
-            val list = mutableListOf()
-            throw ApiException(HttpStatus.BAD_REQUEST,"80/400",e.message)
+            return userRepository.findByEmail(email)
+                ?: throw ApiException(HttpStatus.FOUND,"80/404",email)
+        }catch (e: ApiException){
+            throw e
         }
     }
 }

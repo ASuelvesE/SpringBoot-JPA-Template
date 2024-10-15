@@ -4,7 +4,7 @@ import com.angel.api.models.User
 import com.angel.api.models.dto.request.LoginRequest
 import com.angel.api.models.dto.request.UserRequest
 import com.angel.api.models.dto.response.LoginResponse
-import com.angel.api.models.exceptions.ApiException
+import com.angel.api.exceptions.ApiException
 import com.angel.api.services.AuthService
 import com.angel.api.utils.Utils
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +37,7 @@ class AuthController() {
 
             if (Utils.matches(loginRequest.password, user.password))
                 return ResponseEntity.ok(LoginResponse(loginRequest.email,loginRequest.password,"**"))
-            throw ApiException(HttpStatus.UNAUTHORIZED,"80/401","Incorrect email/password")
+            throw ApiException(HttpStatus.UNAUTHORIZED,"80/401","Incorrect password")
         }catch (e: Exception){
             throw e
         }
