@@ -33,11 +33,7 @@ class AuthController() {
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse> {
         try {
-            val user = authService.findByEmail(loginRequest.email)
-
-            if (Utils.matches(loginRequest.password, user.password))
-                return ResponseEntity.ok(LoginResponse(loginRequest.email,loginRequest.password,"**"))
-            throw ApiException(HttpStatus.UNAUTHORIZED,"80/401","Incorrect password")
+            return ResponseEntity.ok(authService.login(loginRequest))
         }catch (e: Exception){
             throw e
         }

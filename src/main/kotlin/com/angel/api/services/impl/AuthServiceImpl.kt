@@ -3,6 +3,8 @@ package com.angel.api.impl.services
 import com.angel.api.models.enums.Role
 import com.angel.api.models.User
 import com.angel.api.exceptions.ApiException
+import com.angel.api.models.dto.request.LoginRequest
+import com.angel.api.models.dto.response.LoginResponse
 import com.angel.api.repositories.UserRepository
 import com.angel.api.services.AuthService
 import com.angel.api.utils.Utils
@@ -33,6 +35,19 @@ class AuthServiceImpl : AuthService {
         try {
             return userRepository.findByEmail(email)
                 ?: throw ApiException(HttpStatus.FOUND,"80/404",email)
+        }catch (e: Exception){
+            throw e
+        }
+    }
+
+    override fun login(loginRequest: LoginRequest): LoginResponse {
+        try {
+            val user = userRepository.findByEmail(loginRequest.email)
+                ?: throw ApiException(HttpStatus.FOUND,"80/404",loginRequest.email)
+
+            if (Utils.matches(loginRequest.password, user.password))
+                return LoginResponse(loginRequest.email,loginRequest.password,Utils.generateToken(user.email))
+            throw ApiException(HttpStatus.UNAUTHORIZED,"80/401","Incorrect password")
         }catch (e: Exception){
             throw e
         }
