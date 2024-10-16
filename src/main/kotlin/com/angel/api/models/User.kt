@@ -2,6 +2,9 @@ package com.angel.api.models
 
 import com.angel.api.models.enums.Role
 import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 
 @Entity
@@ -9,17 +12,46 @@ import jakarta.persistence.*
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 class User(
         @Column(name = "name", nullable = false)
-        val name: String = "",
+        var name: String = "",
 
         @Column(name = "surnames", nullable = false)
-        val surnames: String = "",
+        var surnames: String = "",
 
         @Column(name = "email", nullable = false, unique = true)
-        val email: String = "",
+        var email: String = "",
 
         @Column(name = "password", nullable = false)
-        val password: String = "",
+        val pass: String = "",
 
         @Enumerated(EnumType.STRING)
-        val role: Role = Role.CUSTOMER
-): BasicEntity()
+        var role: Role = Role.CUSTOMER
+): BasicEntity(), UserDetails {
+
+        override fun getAuthorities(): Collection<GrantedAuthority> {
+                return listOf(SimpleGrantedAuthority(role.name))
+        }
+
+        override fun getPassword(): String {
+                return pass
+        }
+
+        override fun getUsername(): String {
+                return email
+        }
+
+        override fun isAccountNonExpired(): Boolean {
+                return true
+        }
+
+        override fun isAccountNonLocked(): Boolean {
+                return true
+        }
+
+        override fun isCredentialsNonExpired(): Boolean {
+                return true
+        }
+
+        override fun isEnabled(): Boolean {
+                return true
+        }
+}

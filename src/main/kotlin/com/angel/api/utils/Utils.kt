@@ -4,15 +4,37 @@ import com.angel.api.models.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.util.Date
-import java.util.HashMap
+import org.springframework.stereotype.Component
+import java.io.InputStream
+import java.util.*
 import javax.crypto.spec.SecretKeySpec
 
+
 object Utils {
+    private val properties: Properties = loadProperties()
     private val passwordEncoder = BCryptPasswordEncoder()
-    private const val SECRET_KEY = "ej7NrahZu5C5wtlbp9OuLOha7GEh5MxiC0RyBwSosrb5kfS/hd5sqsIwBp9568PcRPKzVzlB/7I7wAyJP605Dw=="
+
+    private var SECRET_KEY: String = this.getJwtSecret()
+
     private const val EXPIRATION_TIME = 1000 * 60 * 60 * 10 // 10 horas
+
+    private fun loadProperties(): Properties {
+        val prop = Properties()
+        try {
+            val inputStream: InputStream? = javaClass.classLoader.getResourceAsStream("application.properties")
+            prop.load(inputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return prop
+    }
+    fun getJwtSecret(): String {
+        val secret = properties.getProperty("jwt.secret", "")
+        println("SECRET_KEY: $secret") // Para depuración
+        return secret.trim()
+    }
 
     fun encodePassword(rawPassword: String): String {
         return passwordEncoder.encode(rawPassword)
@@ -50,7 +72,7 @@ object Utils {
     }
 
     private fun getSigningKey(): SecretKeySpec {
-        val keyBytes = SECRET_KEY.toByteArray()
+        val keyBytes = Base64.getDecoder().decode(SECRET_KEY) // Decodifica la clave secreta
         return SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.jcaName)
     }
 

@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserServiceImpl : UserService {
+class UserServiceImpl : UserService, UserDetailsService {
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -41,5 +43,14 @@ class UserServiceImpl : UserService {
         } catch (e: Exception) {
             throw e
         }
+    }
+
+    override fun loadUserByUsername(email: String): UserDetails {
+        val user = userRepository.findByEmail(email) ?: throw ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with email: $email")
+        return org.springframework.security.core.userdetails.User(
+            user.email,
+            "",
+            user.authorities
+        )
     }
 }
