@@ -1,7 +1,9 @@
 package com.angel.api.services.impl
 
+import com.angel.api.converters.UserDataConverter
 import com.angel.api.exceptions.ApiException
 import com.angel.api.models.User
+import com.angel.api.models.dto.UserDTO
 import com.angel.api.repositories.UserRepository
 import com.angel.api.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,27 +21,30 @@ class UserServiceImpl : UserService, UserDetailsService {
     @Autowired
     lateinit var userRepository: UserRepository
 
-    override fun getById(id: UUID): User {
-        return try {
-            userRepository.findById(id).orElseThrow {
+    override fun getById(id: UUID): UserDTO {
+        try {
+            val user = userRepository.findById(id).orElseThrow {
                 ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with ID: $id")
             }
+            return UserDataConverter.toDTO(user)
         } catch (e: Exception) {
             throw e
         }
     }
 
-    override fun getByEmail(email: String): User {
-        return try {
-            userRepository.findByEmail(email) ?: throw ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with email: $email")
+    override fun getByEmail(email: String): UserDTO {
+        try {
+            val user = userRepository.findByEmail(email) ?: throw ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with email: $email")
+            return UserDataConverter.toDTO(user)
         } catch (e: Exception) {
             throw e
         }
     }
 
-    override fun findAllPaginated(pageable: Pageable): Page<User> {
-        return try {
-            userRepository.findAll(pageable)
+    override fun findAllPaginated(pageable: Pageable): Page<UserDTO> {
+        try {
+            val page = userRepository.findAll(pageable)
+            return page.map { UserDataConverter.toDTO(it) }
         } catch (e: Exception) {
             throw e
         }

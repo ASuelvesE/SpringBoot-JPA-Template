@@ -1,7 +1,6 @@
 package com.angel.api.controllers
 
-import com.angel.api.models.User
-import com.angel.api.exceptions.ApiException
+import com.angel.api.models.dto.UserDTO
 import com.angel.api.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -29,7 +28,7 @@ class UserController {
         ]
     )
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: UUID): ResponseEntity<User> {
+    fun getById(@PathVariable id: UUID): ResponseEntity<UserDTO> {
         try {
             val user = userService.getById(id)
             return ResponseEntity.ok(user)
@@ -47,7 +46,7 @@ class UserController {
         ]
     )
     @GetMapping("/email")
-    fun getByEmail(@RequestParam email: String): ResponseEntity<User> {
+    fun getByEmail(@RequestParam email: String): ResponseEntity<UserDTO> {
         try {
             val user = userService.getByEmail(email)
             return ResponseEntity.ok(user)
@@ -64,7 +63,7 @@ class UserController {
         ]
     )
     @GetMapping
-    fun findAllPaginated(pageable: Pageable): ResponseEntity<Page<User>> {
+    fun findAllPaginated(pageable: Pageable): ResponseEntity<Page<UserDTO>> {
         try {
             return ResponseEntity.ok(userService.findAllPaginated(pageable))
         } catch (e: Exception) {
