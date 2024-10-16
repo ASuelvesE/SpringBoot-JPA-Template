@@ -1,5 +1,6 @@
 package com.angel.api.services.impl
 
+import com.angel.api.configs.SessionManager
 import com.angel.api.converters.UserDataConverter
 import com.angel.api.exceptions.ApiException
 import com.angel.api.models.User
@@ -19,6 +20,9 @@ import java.util.*
 class UserServiceImpl : UserService, UserDetailsService {
 
     @Autowired
+    lateinit var sessionManager: SessionManager
+
+    @Autowired
     lateinit var userRepository: UserRepository
 
     override fun getById(id: UUID): UserDTO {
@@ -34,6 +38,7 @@ class UserServiceImpl : UserService, UserDetailsService {
 
     override fun getByEmail(email: String): UserDTO {
         try {
+            println("Token: ${sessionManager.getToken()}")
             val user = userRepository.findByEmail(email) ?: throw ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with email: $email")
             return UserDataConverter.toDTO(user)
         } catch (e: Exception) {

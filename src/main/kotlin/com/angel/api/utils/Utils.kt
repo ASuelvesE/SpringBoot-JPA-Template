@@ -32,7 +32,6 @@ object Utils {
     }
     fun getJwtSecret(): String {
         val secret = properties.getProperty("jwt.secret", "")
-        println("SECRET_KEY: $secret") // Para depuración
         return secret.trim()
     }
 

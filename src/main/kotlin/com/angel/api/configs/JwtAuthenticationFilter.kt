@@ -18,7 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 @Component
 class JwtAuthenticationFilter(
-    private val userService: UserServiceImpl
+    private val userService: UserServiceImpl,
+    private val sessionManager: SessionManager
 ) : OncePerRequestFilter() {
 
     @Throws(ServletException::class, java.io.IOException::class)
@@ -37,6 +38,7 @@ class JwtAuthenticationFilter(
             jwt = authorizationHeader.substring(7)
             try {
                 email = Utils.getValueFromToken("email", jwt)
+                sessionManager.saveToken(jwt)
             } catch (e: SecurityException) {
                 throw ApiException(HttpStatus.UNAUTHORIZED,"80/401",e.message)
             } catch (e: ExpiredJwtException) {
