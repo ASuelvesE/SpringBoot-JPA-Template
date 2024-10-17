@@ -1,4 +1,4 @@
-package com.angel.api.converters
+package com.angel.api.utils.converters
 
 
 import com.angel.api.models.User

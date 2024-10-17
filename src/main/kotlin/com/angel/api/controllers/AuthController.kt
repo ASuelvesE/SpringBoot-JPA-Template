@@ -1,6 +1,7 @@
 package com.angel.api.controllers
 
 import com.angel.api.models.User
+import com.angel.api.models.dto.UserDTO
 import com.angel.api.models.dto.request.LoginRequest
 import com.angel.api.models.dto.request.UserRequest
 import com.angel.api.models.dto.response.LoginResponse
@@ -13,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 
 @RestController
-@RequestMapping("/apiv1/auth")
+@RequestMapping("/api/v1/auth")
 class AuthController() {
 
     @Autowired
@@ -28,7 +29,7 @@ class AuthController() {
         ]
     )
     @PostMapping("/register")
-    fun register(@RequestBody userRequest: UserRequest): ResponseEntity<User> {
+    fun register(@RequestBody userRequest: UserRequest): ResponseEntity<UserDTO> {
         try {
             val user = authService.createUser(userRequest.name, userRequest.surnames, userRequest.email, userRequest.password, userRequest.role)
             return ResponseEntity.ok(user)
