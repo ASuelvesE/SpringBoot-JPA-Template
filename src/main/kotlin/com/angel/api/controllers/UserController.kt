@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -28,7 +30,7 @@ class UserController {
         ]
     )
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: UUID): ResponseEntity<UserDTO> {
+    fun getById(@PathVariable(required = true) id: UUID): ResponseEntity<UserDTO> {
         try {
             val user = userService.getById(id)
             return ResponseEntity.ok(user)
@@ -46,7 +48,7 @@ class UserController {
         ]
     )
     @GetMapping("/email")
-    fun getByEmail(@RequestParam email: String): ResponseEntity<UserDTO> {
+    fun getByEmail(@RequestParam(value = "email", required = true) email: String): ResponseEntity<UserDTO> {
         try {
             val user = userService.getByEmail(email)
             return ResponseEntity.ok(user)
@@ -59,13 +61,17 @@ class UserController {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Users found"),
+            ApiResponse(responseCode = "400", description = "Bad Request - invalid parameters"),
             ApiResponse(responseCode = "500", description = "Internal server error")
         ]
     )
     @GetMapping
-    fun findAllPaginated(pageable: Pageable): ResponseEntity<Page<UserDTO>> {
+    fun findAllPaginated(
+        @RequestParam(value = "offset", required = true) offset: Int,
+        @RequestParam(value = "limit", required = true) limit: Int
+    ): ResponseEntity<Page<UserDTO>> {
         try {
-            return ResponseEntity.ok(userService.findAllPaginated(pageable))
+            return ResponseEntity.ok(userService.findAllPaginated(offset, limit))
         } catch (e: Exception) {
             throw e
         }

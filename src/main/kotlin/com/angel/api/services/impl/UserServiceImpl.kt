@@ -9,7 +9,9 @@ import com.angel.api.repositories.UserRepository
 import com.angel.api.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -46,8 +48,9 @@ class UserServiceImpl : UserService, UserDetailsService {
         }
     }
 
-    override fun findAllPaginated(pageable: Pageable): Page<UserDTO> {
+    override fun findAllPaginated(offset: Int, limit: Int): Page<UserDTO> {
         try {
+            val pageable: Pageable = PageRequest.of((offset / limit), limit, Sort.by(Sort.Direction.DESC, "created"))
             val page = userRepository.findAll(pageable)
             return page.map { UserDataConverter.toDTO(it) }
         } catch (e: Exception) {

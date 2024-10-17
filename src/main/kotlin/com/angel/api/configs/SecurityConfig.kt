@@ -15,17 +15,17 @@ class SecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFilte
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .csrf().disable() // Deshabilitar CSRF si no es necesario
+            .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
-                    // Permitir acceso público a las rutas de Swagger
+                    // Permitir acceso público a las rutas:
                     .requestMatchers(
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
-                        "/apiv1/auth/**"
+                        "/api/v1/auth/**"
                     ).permitAll()
-                    // El resto con autentificación
+                    // El resto con autentificación:
                     .anyRequest().authenticated()
             }
             .sessionManagement { sessionManagement ->
