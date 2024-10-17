@@ -4,6 +4,7 @@ import com.angel.api.models.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
@@ -49,11 +50,12 @@ object Utils {
         claims["name"] = user.name
         claims["surnames"] = user.surnames
         claims["role"] = user.role
+
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .signWith(Keys.hmacShaKeyFor(SECRET_KEY.toByteArray(Charsets.UTF_8)), SignatureAlgorithm.HS256) // Usar la clave generada
             .compact()
     }
 
