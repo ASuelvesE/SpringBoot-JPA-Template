@@ -4,11 +4,18 @@ FROM eclipse-temurin:17-jdk-alpine AS build
 # Establece el directorio de trabajo
 WORKDIR /app
 
+# Instala bash
+RUN apk add --no-cache bash
+
 # Copia el archivo de Gradle y las dependencias
 COPY gradle gradle
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
 COPY src ./src
+COPY gradlew .  # Copia el script gradlew
+
+# Agrega permisos de ejecución al script gradlew
+RUN chmod +x gradlew
 
 # Construye el proyecto usando Gradle
 RUN ./gradlew build --no-daemon
