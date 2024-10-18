@@ -1,10 +1,8 @@
 package com.angel.api.models
 
+import com.angel.api.infrastructure.models.BasicEntity
 import com.angel.api.models.enums.Role
 import jakarta.persistence.*
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 
 
 @Entity

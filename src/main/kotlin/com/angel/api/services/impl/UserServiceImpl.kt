@@ -2,7 +2,7 @@ package com.angel.api.services.impl
 
 import com.angel.api.configs.SessionManager
 import com.angel.api.utils.converters.UserDataConverter
-import com.angel.api.exceptions.ApiException
+import com.angel.api.infrastructure.exceptions.ApiException
 import com.angel.api.models.User
 import com.angel.api.models.dto.UserDTO
 import com.angel.api.repositories.CredentialsRepository

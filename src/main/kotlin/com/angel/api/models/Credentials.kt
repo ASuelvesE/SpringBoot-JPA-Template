@@ -1,5 +1,6 @@
 package com.angel.api.models
 
+import com.angel.api.infrastructure.models.BasicEntity
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

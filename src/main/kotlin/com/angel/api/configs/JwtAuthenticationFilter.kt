@@ -1,6 +1,6 @@
 package com.angel.api.configs
 
-import com.angel.api.exceptions.ApiException
+import com.angel.api.infrastructure.exceptions.ApiException
 import com.angel.api.services.impl.UserServiceImpl
 import com.angel.api.utils.Utils
 import io.jsonwebtoken.ExpiredJwtException

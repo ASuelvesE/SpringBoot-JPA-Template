@@ -1,4 +1,4 @@
-package com.angel.api.models
+package com.angel.api.infrastructure.models
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

@@ -2,7 +2,7 @@ package com.angel.api.impl.services
 
 import com.angel.api.models.enums.Role
 import com.angel.api.models.User
-import com.angel.api.exceptions.ApiException
+import com.angel.api.infrastructure.exceptions.ApiException
 import com.angel.api.models.Credentials
 import com.angel.api.models.dto.UserDTO
 import com.angel.api.models.dto.request.LoginRequest

@@ -4,7 +4,7 @@ package com.angel.api
 import com.angel.api.containers.MySqlContainerConfiguration
 import com.angel.api.containers.PostgresSqlContainerConfiguration
 import com.angel.api.delegates.UserUnitDelegate
-import com.angel.api.exceptions.ApiException
+import com.angel.api.infrastructure.exceptions.ApiException
 import com.angel.api.models.dto.UserDTO
 import com.angel.api.models.dto.request.LoginRequest
 import com.angel.api.services.AuthService
