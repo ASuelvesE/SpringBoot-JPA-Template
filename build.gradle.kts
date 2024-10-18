@@ -63,3 +63,13 @@ allOpen {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
+if (project.hasProperty("profile")) {
+	val currentProfile: String = project.property("profile").toString()
+
+	tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
+		environment("SPRING_PROFILES_ACTIVE", currentProfile)
+	}
+}
+
