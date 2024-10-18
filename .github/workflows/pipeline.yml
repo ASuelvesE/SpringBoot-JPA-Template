@@ -27,6 +27,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Run all tests
-        run: ./gradlew test --info --rerun-tasks
+      - name: Build Docker image
+        run: docker build -t my-app .
 
+      - name: Run all tests inside Docker
+        run: docker run --rm my-app ./gradlew test --info --rerun-tasks

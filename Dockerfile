@@ -5,7 +5,7 @@ FROM openjdk:17.0-buster
 ARG SERVER_PORT=8080
 
 # Define el nombre del archivo JAR y el directorio de la aplicación
-ENV APP_FILE=app-1.0.0.jar
+ENV APP_FILE=api-0.0.1-SNAPSHOT.jar
 ENV APP_HOME=/app
 
 # Crea el directorio de la aplicación
@@ -15,7 +15,7 @@ RUN mkdir $APP_HOME
 EXPOSE $SERVER_PORT
 
 # Copia el archivo JAR construido al contenedor
-COPY ./app/build/libs/$APP_FILE $APP_HOME/$APP_FILE
+COPY ./build/libs/$APP_FILE $APP_HOME/$APP_FILE
 
 # Establece el directorio de trabajo
 WORKDIR $APP_HOME
