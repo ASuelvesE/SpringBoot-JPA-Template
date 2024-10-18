@@ -27,6 +27,24 @@ class UserServiceImpl : UserService, UserDetailsService {
 
     @Autowired
     lateinit var userRepository: UserRepository
+    override fun update(userDTO: UserDTO): UserDTO {
+        try {
+            val user = userRepository.findById(userDTO.id).orElseThrow {
+                ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with ID: ${userDTO.id}")
+            }
+            this.merge(user,UserDataConverter.fromDTO(userDTO))
+            userRepository.save(user)
+            return UserDataConverter.toDTO(user)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+    private fun merge(source: User, destination: User){
+        source.email = destination.email
+        source.name = destination.name
+        source.role = destination.role
+        source.surnames = destination.surnames
+    }
 
 
     override fun getById(id: UUID): UserDTO {
@@ -68,4 +86,5 @@ class UserServiceImpl : UserService, UserDetailsService {
             mutableListOf()
         )
     }
+
 }

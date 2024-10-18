@@ -11,12 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails
     indexes = [
         Index(name = "idx_user_id", columnList = "user_id"),
         Index(name = "idx_username", columnList = "username")
+    ],
+    uniqueConstraints = [
+        UniqueConstraint(name = "uk_identifier_user_id", columnNames = ["identifier", "user_id"])
     ]
 )
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 class Credentials (
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "identifier", nullable = false, unique = true)
     val identifier: String = "",
 
     @Column(name = "password", nullable = false)

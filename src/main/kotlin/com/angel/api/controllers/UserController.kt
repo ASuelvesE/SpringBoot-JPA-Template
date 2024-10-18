@@ -39,6 +39,24 @@ class UserController {
         }
     }
 
+    @Operation(summary = "Update user")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "User updated"),
+            ApiResponse(responseCode = "404", description = "User not found"),
+            ApiResponse(responseCode = "500", description = "Internal server error")
+        ]
+    )
+    @PutMapping("/")
+    fun update(@RequestBody userDTO: UserDTO): ResponseEntity<UserDTO> {
+        try {
+            val user = userService.update(userDTO)
+            return ResponseEntity.ok(user)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
     @Operation(summary = "Get user by email")
     @ApiResponses(
         value = [

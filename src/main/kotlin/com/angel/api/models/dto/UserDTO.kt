@@ -5,7 +5,7 @@ import java.util.UUID
 
 data class UserDTO(
     val id: UUID = UUID.randomUUID(),
-    val name: String = "",
+    var name: String = "",
     val surnames: String = "",
     val email: String = "",
     val role: Role = Role.CUSTOMER

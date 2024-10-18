@@ -15,6 +15,7 @@ import com.angel.api.utils.converters.UserDataConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.util.UUID
 import kotlin.io.println
 
 
@@ -33,10 +34,10 @@ class AuthServiceImpl : AuthService {
             val hashedPassword = Utils.encodePassword(rawPassword)
 
             val user = userRepository.save(User(name, surnames, email, role, null))
-            credentialsRepository.save(Credentials(user.id.toString(),hashedPassword, user = user))
+            credentialsRepository.save(Credentials(UUID.randomUUID().toString(),hashedPassword, user = user))
             return UserDataConverter.toDTO(user)
         }catch (e: Exception){
-            throw ApiException(HttpStatus.BAD_REQUEST,"80/400",e.message)
+            throw ApiException(HttpStatus.BAD_REQUEST,"80/400","Mail already exists")
         }
     }
 

@@ -46,6 +46,7 @@ dependencies {
 	testImplementation("org.testcontainers:mysql")
 	testImplementation("org.testcontainers:postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("io.github.serpro69:kotlin-faker:1.16.0")
 }
 
 kotlin {
