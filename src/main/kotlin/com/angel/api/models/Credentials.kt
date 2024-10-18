@@ -22,8 +22,8 @@ class Credentials (
     @Column(name = "password", nullable = false)
     val pass: String = "",
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     var user: User? = null
 ): BasicEntity(), UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
