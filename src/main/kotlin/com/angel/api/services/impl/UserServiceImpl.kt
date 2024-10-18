@@ -5,6 +5,7 @@ import com.angel.api.utils.converters.UserDataConverter
 import com.angel.api.exceptions.ApiException
 import com.angel.api.models.User
 import com.angel.api.models.dto.UserDTO
+import com.angel.api.repositories.CredentialsRepository
 import com.angel.api.repositories.UserRepository
 import com.angel.api.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +27,7 @@ class UserServiceImpl : UserService, UserDetailsService {
 
     @Autowired
     lateinit var userRepository: UserRepository
+
 
     override fun getById(id: UUID): UserDTO {
         try {
@@ -61,9 +63,9 @@ class UserServiceImpl : UserService, UserDetailsService {
     override fun loadUserByUsername(email: String): UserDetails {
         val user = userRepository.findByEmail(email) ?: throw ApiException(HttpStatus.NOT_FOUND, "80/404", "User not found with email: $email")
         return org.springframework.security.core.userdetails.User(
-            user.email,
+            user.credentials?.username,
             "",
-            user.authorities
+            mutableListOf()
         )
     }
 }

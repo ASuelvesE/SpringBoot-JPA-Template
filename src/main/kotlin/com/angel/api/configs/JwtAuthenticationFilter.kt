@@ -43,6 +43,8 @@ class JwtAuthenticationFilter(
                 throw ApiException(HttpStatus.UNAUTHORIZED,"80/401",e.message)
             } catch (e: ExpiredJwtException) {
                 throw ApiException(HttpStatus.UNAUTHORIZED,"80/401",e.message)
+            }catch (e: Exception){
+                throw ApiException(HttpStatus.UNAUTHORIZED,"80/401",e.message)
             }
         }
 

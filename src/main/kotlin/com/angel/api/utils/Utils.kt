@@ -51,11 +51,13 @@ object Utils {
         claims["surnames"] = user.surnames
         claims["role"] = user.role
 
+        val signingKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET_KEY))
+
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
-            .signWith(Keys.hmacShaKeyFor(SECRET_KEY.toByteArray(Charsets.UTF_8)), SignatureAlgorithm.HS256) // Usar la clave generada
+            .signWith(signingKey, SignatureAlgorithm.HS256)
             .compact()
     }
 
@@ -68,7 +70,7 @@ object Utils {
                 .body
             claims.expiration.after(Date())
         } catch (e: Exception) {
-            false // Si hay un error, el token no es válido
+            false
         }
     }
 
