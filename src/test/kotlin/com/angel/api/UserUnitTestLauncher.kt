@@ -15,9 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 
-
-//@Import(PostgresSqlContainerConfiguration::class)
-@Import(MySqlContainerConfiguration::class)
+//@Import(MySqlContainerConfiguration::class)
+@Import(PostgresSqlContainerConfiguration::class)
 @SpringBootTest
 class UserUnitTestLauncher() {
 
