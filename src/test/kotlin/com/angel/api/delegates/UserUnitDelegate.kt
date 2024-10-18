@@ -6,7 +6,8 @@ import io.github.serpro69.kfaker.Faker
 
 class UserUnitDelegate {
 
-    val faker = Faker()
+    private val faker = Faker()
+
     fun getInstance(): UserDTO {
         return UserDTO(
             name = faker.name.neutralFirstName(),
