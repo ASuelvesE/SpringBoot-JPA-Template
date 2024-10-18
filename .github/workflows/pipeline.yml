@@ -27,5 +27,5 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Test JUnit with Gradle
-        run: ./gradlew test
+      - name: Run all tests
+        run: ./gradlew test --rerun-tasks
