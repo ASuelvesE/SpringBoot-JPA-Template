@@ -1,36 +1,24 @@
 # Usa una imagen base de OpenJDK
-FROM eclipse-temurin:17-jdk-alpine AS build
+FROM openjdk:17.0-buster
+
+# Define el puerto del servidor como un argumento
+ARG SERVER_PORT=8080
+
+# Define el nombre del archivo JAR y el directorio de la aplicación
+ENV APP_FILE=app-1.0.0.jar
+ENV APP_HOME=/app
+
+# Crea el directorio de la aplicación
+RUN mkdir $APP_HOME
+
+# Expone el puerto en el que la aplicación escucha
+EXPOSE $SERVER_PORT
+
+# Copia el archivo JAR construido al contenedor
+COPY ./app/build/libs/$APP_FILE $APP_HOME/$APP_FILE
 
 # Establece el directorio de trabajo
-WORKDIR /app
-
-# Instala bash
-RUN apk add --no-cache bash
-
-# Copia el archivo de Gradle y las dependencias
-COPY gradle gradle
-COPY build.gradle.kts .
-COPY settings.gradle.kts .
-COPY src ./src
-COPY gradlew .
-
-# Agrega permisos de ejecución al script gradlew
-RUN chmod +x gradlew
-
-# Construye el proyecto usando Gradle
-RUN ./gradlew build --no-daemon
-
-# Crea una imagen más pequeña para el contenedor de producción
-FROM eclipse-temurin:17-jdk-alpine
-
-# Establece el directorio de trabajo
-WORKDIR /app
-
-# Copia el JAR construido desde la etapa anterior
-COPY --from=build /app/build/libs/*.jar app.jar
-
-# Exponer el puerto en el que la aplicación escucha
-EXPOSE 8080
+WORKDIR $APP_HOME
 
 # Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java -jar $APP_FILE"]
