@@ -12,7 +12,7 @@ COPY gradle gradle
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
 COPY src ./src
-COPY gradlew .  # Copia el script gradlew
+COPY gradlew .
 
 # Agrega permisos de ejecución al script gradlew
 RUN chmod +x gradlew
