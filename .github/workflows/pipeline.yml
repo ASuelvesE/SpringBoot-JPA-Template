@@ -19,14 +19,18 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: wrapper
-
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Run all tests
-        run: ./gradlew test --info --rerun-tasks
+      - name: Build Docker image
+        run: |
+          docker build -t my-image-name .
 
+      - name: Run tests in Docker container
+        run: |
+          docker run --rm my-image-name ./gradlew test
+
+      - name: Generate test reports
+        run: |
+          mkdir -p reports
+          cp -r build/reports/tests reports/
